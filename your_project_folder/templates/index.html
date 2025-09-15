@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        {% if 'user_id' in session %}
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/signup">Signup</a>
+        {% endif %}
+    </div>
+
+    <h1>Welcome to the Home Page</h1>
+    {% if 'user_id' in session %}
+        <p class="logged-in-message">You're logged in. Welcome back!</p>
+    {% else %}
+        <p class="logged-out-message">Please log in or sign up to access more features.</p>
+    {% endif %}
+</body>
+</html>

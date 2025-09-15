@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="store-info">
+                    <div class="store-logo">🏪</div>
+                    <div>
+                        <h1>Store Management System</h1>
+                        <p class="store-tagline">Professional Retail Management</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span id="welcome-user">Welcome, Admin</span>
+                    <button class="btn btn-secondary" id="logout-btn">Logout</button>
+                </div>
+            </div>
+            <nav>
+                <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+                <button class="nav-btn" data-section="products">📦 Products</button>
+                <button class="nav-btn" data-section="customers">👥 Customers</button>
+                <button class="nav-btn" data-section="billing">💳 Billing</button>
+                <button class="nav-btn" data-section="sales">📈 Sales</button>
+            </nav>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="store-photos">
+                <div class="photo-gallery">
+                    <div class="store-photo">
+                        <img src="/static/images/store-front.jpg" alt="Store Front" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5TdG9yZSBGcm9udDwvdGV4dD48L3N2Zz4='">
+                        <div class="photo-overlay">Store Front</div>
+                    </div>
+                    <div class="store-photo">
+                        <img src="/static/images/store-interior.jpg" alt="Store Interior" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNzY0YmEyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbnRlcmlvcjwvdGV4dD48L3N2Zz4='">
+                        <div class="photo-overlay">Interior View</div>
+                    </div>
+                    <div class="store-photo">
+                        <img src="/static/images/checkout.jpg" alt="Checkout Counter" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjA5M2ZiIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DaGVja291dDwvdGV4dD48L3N2Zz4='">
+                        <div class="photo-overlay">Checkout Counter</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Dashboard Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-info">
+                        <h3>Total Products</h3>
+                        <p class="stat-number" id="total-products">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-info">
+                        <h3>Low Stock Items</h3>
+                        <p class="stat-number" id="low-stock">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3>Today's Sales</h3>
+                        <p class="stat-number" id="today-sales">$0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <h3>Monthly Sales</h3>
+                        <p class="stat-number" id="month-sales">$0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>Daily Sales (Last 7 Days)</h3>
+                    <canvas id="salesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Top Products</h3>
+                    <canvas id="productsChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Category Sales</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="section">
+            <div class="section-header">
+                <h2>Products Management</h2>
+                <button class="btn btn-primary" id="add-product-btn">➕ Add Product</button>
+            </div>
+
+            <!-- Add/Edit Product Form -->
+            <div id="product-form" class="form-container" style="display: none;">
+                <h3 id="form-title">Add Product</h3>
+                <form id="product-form-element">
+                    <input type="hidden" id="product-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-name">Product Name:</label>
+                            <input type="text" id="product-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-category">Category:</label>
+                            <select id="product-category" required>
+                                <option value="">Select Category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Food & Beverages">Food & Beverages</option>
+                                <option value="Stationery">Stationery</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Home & Garden">Home & Garden</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-price">Selling Price:</label>
+                            <input type="number" id="product-price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-cost">Cost Price:</label>
+                            <input type="number" id="product-cost" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-stock">Stock Quantity:</label>
+                            <input type="number" id="product-stock" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-supplier">Supplier:</label>
+                            <input type="text" id="product-supplier">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-barcode">Barcode:</label>
+                        <input type="text" id="product-barcode">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">💾 Save Product</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-form">❌ Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Products Table -->
+            <div class="table-container">
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Selling Price</th>
+                            <th>Cost Price</th>
+                            <th>Stock</th>
+                            <th>Supplier</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Customers Section -->
+        <section id="customers" class="section">
+            <div class="section-header">
+                <h2>Customer Management</h2>
+                <button class="btn btn-primary" id="add-customer-btn">➕ Add Customer</button>
+            </div>
+
+            <!-- Add Customer Form -->
+            <div id="customer-form" class="form-container" style="display: none;">
+                <h3>Add Customer</h3>
+                <form id="customer-form-element">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer-name">Full Name:</label>
+                            <input type="text" id="customer-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-email">Email:</label>
+                            <input type="email" id="customer-email">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer-phone">Phone:</label>
+                            <input type="tel" id="customer-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-address">Address:</label>
+                            <input type="text" id="customer-address">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">💾 Save Customer</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-customer-form">❌ Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="table-container">
+                <table id="customers-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Billing Section -->
+        <section id="billing" class="section">
+            <h2>💳 Billing System</h2>
+            
+            <div class="billing-container">
+                <div class="billing-form">
+                    <h3>New Sale</h3>
+                    
+                    <div class="customer-selection">
+                        <label for="billing-customer">Customer:</label>
+                        <select id="billing-customer">
+                            <option value="">Walk-in Customer</option>
+                        </select>
+                    </div>
+
+                    <div class="product-selection">
+                        <h4>Add Products</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <select id="billing-product">
+                                    <option value="">Select Product</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="billing-quantity" placeholder="Quantity" min="1">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="add-to-cart">➕ Add</button>
+                        </div>
+                    </div>
+
+                    <div class="cart-container">
+                        <h4>Cart Items</h4>
+                        <div class="cart-items" id="cart-items">
+                            <p class="empty-cart">No items in cart</p>
+                        </div>
+                    </div>
+
+                    <div class="billing-summary">
+                        <div class="discount-section">
+                            <label for="discount-percent">Discount (%):</label>
+                            <input type="number" id="discount-percent" min="0" max="100" value="0" step="0.1">
+                        </div>
+                        
+                        <div class="payment-method">
+                            <label for="payment-method">Payment Method:</label>
+                            <select id="payment-method">
+                                <option value="Cash">Cash</option>
+                                <option value="Card">Card</option>
+                                <option value="Digital">Digital Wallet</option>
+                            </select>
+                        </div>
+
+                        <div class="total-summary">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="cart-subtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Discount:</span>
+                                <span id="cart-discount">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (8%):</span>
+                                <span id="cart-tax">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="cart-total">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-large" id="process-sale">💳 Process Sale</button>
+                    </div>
+                </div>
+
+                <div class="receipt-preview" id="receipt-preview">
+                    <h3>Receipt Preview</h3>
+                    <div class="receipt" id="receipt-content">
+                        <div class="receipt-header">
+                            <h4>🏪 Store Management System</h4>
+                            <p>Professional Retail Store</p>
+                            <p>Date: <span id="receipt-date"></span></p>
+                        </div>
+                        <div class="receipt-body">
+                            <p>No items selected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sales Section -->
+        <section id="sales" class="section">
+            <div class="section-header">
+                <h2>Sales History</h2>
+                <div class="sales-filters">
+                    <button class="btn btn-secondary" onclick="storeManager.loadSales()">🔄 Refresh</button>
+                </div>
+            </div>
+
+            <!-- Sales Table -->
+            <div class="table-container">
+                <table id="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Sale ID</th>
+                            <th>Customer</th>
+                            <th>Subtotal</th>
+                            <th>Discount</th>
+                            <th>Tax</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
